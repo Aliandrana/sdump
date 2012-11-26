@@ -22,13 +22,16 @@ int main(int argc, char **argv) {
 
     if(isHeadered(&rom) != -1) {
         readHeader(&rom, &hrom);
-        if(!rom.ok) return 1;
+        if(!rom.ok) {
+            printf("Problemas na leitura do arquivo\n");
+            return 1;
+        }
 
         u_int8_t mapmodeAA, mapmodeB;
 
-        printf("ROM Name: %s\n", hrom.romName);
+        printf("ROM Name:\t%s\n", hrom.romName);
 
-        printf("Map Mode: ");
+        printf("Map Mode:\t");
         mapmodeAA = hrom.romMapMode & 0x30;
         mapmodeB = hrom.romMapMode & 0x01;
         if(mapmodeAA) 
@@ -40,7 +43,7 @@ int main(int argc, char **argv) {
  
 
 
-        printf("ROM Type: ");
+        printf("ROM Type:\t");
         switch(hrom.romType) {
             case 0x00:
                 printf("ROM Only\n");
@@ -128,7 +131,7 @@ int main(int argc, char **argv) {
                 break;
         }
 
-        printf("ROM Size: ");
+        printf("ROM Size:\t");
         switch(hrom.romSize) {
             case 0x09:
                 printf("3~4MBit\n");
@@ -151,9 +154,9 @@ int main(int argc, char **argv) {
         }
 
 
-        printf("SRAM Size: %.0fKB\n", 2048 * pow(2, hrom.romSRAMSize));
+        printf("SRAM Size:\t%.0fKB\n", 2048 * pow(2, hrom.romSRAMSize));
 
-        printf("Dest. Code: ");
+        printf("Dest. Code:\t");
 
         switch(hrom.romDstCode) {
             case 0x00:
@@ -214,9 +217,9 @@ int main(int argc, char **argv) {
                 printf("Desconhecido\n");
         }
 
-        printf("Fixed Value: 0x%hhx\n", hrom.romFixed);
-        printf("Compl. Checksum: 0x%hx\n", hrom.romCompCheck);
-        printf("Checksum : 0x%hx\n", hrom.romChecksum);
+        printf("Fixed Value:\t0x%hhx\n", hrom.romFixed);
+        printf("Compl. Chksum:\t0x%hx\n", hrom.romCompCheck);
+        printf("Checksum:\t0x%hx\n", hrom.romChecksum);
 
 
         return 0;
