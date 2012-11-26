@@ -26,8 +26,18 @@ struct srom openRom(char *name) {
 
 int isHeadered(struct srom *rom) {
 
-    if((rom->romSize % 1024) == 0) return 0;
-    if((rom->romSize % 1024) == 512) return 1;
+    int hist = 0;
+    int i;
+    u_int8_t header[512];
+
+    lseek(rom->fd, 0, SEEK_SET);
+    read(rom->fd, header, 512);
+
+    for(i=0;i<512;i++)
+        if(header[i] == 0x00) hist++;
+
+    if((rom->romSize % 1024) == 0 && hist < 200) return 0;
+    if((rom->romSize % 1024) == 512 || hist > 450) return 1;
 
     return -1;
 
@@ -43,17 +53,21 @@ void readHeader(struct srom *rom, struct srom_header *hrom) {
     int blank = 0;
     int i;
 
+
     if(isHeadered(rom) == 0){
         lseek(rom->fd, 32704, SEEK_SET);
+
 
         read(rom->fd, hrom, sizeof(struct srom_header));
 
         for(i=0;i<21;i++){
             if(isascii(hrom->romName[i])) hist++;
-            if(hrom->romName[i] == 0x20) blank++;
+            if(hrom->romName[i] == 0x20 || hrom->romName[i] == 0x00) blank++;
         }
         
-        if(hist < 20 || blank > 18) {
+        //printf("hist: %d blank: %d\n", hist, blank);
+
+        if(hist < 20 || blank >= 18) {
             lseek(rom->fd, 65472, SEEK_SET);
             read(rom->fd, hrom, sizeof(struct srom_header));
         }
@@ -69,6 +83,7 @@ void readHeader(struct srom *rom, struct srom_header *hrom) {
             if(hrom->romName[i] == 0x20 || hrom->romName[i] == 0x00) blank++;
         }
         
+
         if(hist < 20 || blank > 18) {
             lseek(rom->fd, 33216, SEEK_SET);
             read(rom->fd, hrom, sizeof(struct srom_header));
