@@ -90,6 +90,8 @@ void readHeader(struct srom *rom, struct srom_header *hrom) {
         }
     }
 
+    rom->ok = 1;
+
     // Caso nao tenha encontrado o cabecalho insere -'s no campo de nome
     hist = 0;
     blank = 0;
@@ -101,7 +103,10 @@ void readHeader(struct srom *rom, struct srom_header *hrom) {
         for(i=0;i<20;i++){
             hrom->romName[i] = 0x2d;
         }
+        rom->ok = 0;
     }
+
+    hrom->romName[20] = 0x00;
 
 
 }

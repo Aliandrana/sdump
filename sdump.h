@@ -7,6 +7,7 @@ struct srom {
     char *romName;
     int romSize;
     int fd;
+    u_int8_t ok;
 };
 
 struct srom_header {
