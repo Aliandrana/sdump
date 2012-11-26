@@ -11,7 +11,7 @@ struct srom {
 
 struct srom_header {
 
-    char romName[21];
+    u_int8_t romName[21];
     u_int8_t romMapMode;
     u_int8_t romType;
     u_int8_t romSize;

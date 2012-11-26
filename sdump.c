@@ -4,6 +4,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <ctype.h>
 
 #include "sdump.h"
 
@@ -32,13 +33,60 @@ int isHeadered(struct srom *rom) {
 
 }
 
+/*
+ * Procura pelo cabecalho usando uma heuristica muito porca. Parece que funciona hehehehe
+ *
+*/
 void readHeader(struct srom *rom, struct srom_header *hrom) {
 
-    if(isHeadered(rom) == 0)
+    int hist = 0;
+    int blank = 0;
+    int i;
+
+    if(isHeadered(rom) == 0){
         lseek(rom->fd, 32704, SEEK_SET);
-    else
+
+        read(rom->fd, hrom, sizeof(struct srom_header));
+
+        for(i=0;i<21;i++){
+            if(isascii(hrom->romName[i])) hist++;
+            if(hrom->romName[i] == 0x20) blank++;
+        }
+        
+        if(hist < 20 || blank > 18) {
+            lseek(rom->fd, 65472, SEEK_SET);
+            read(rom->fd, hrom, sizeof(struct srom_header));
+        }
+
+    }
+    else if(isHeadered(rom) == 1) {
         lseek(rom->fd, 65984, SEEK_SET);
 
-    read(rom->fd, hrom, sizeof(struct srom_header));
+        read(rom->fd, hrom, sizeof(struct srom_header));
+
+        for(i=0;i<21;i++) {
+            if(isascii(hrom->romName[i])) hist++;
+            if(hrom->romName[i] == 0x20 || hrom->romName[i] == 0x00) blank++;
+        }
+        
+        if(hist < 20 || blank > 18) {
+            lseek(rom->fd, 33216, SEEK_SET);
+            read(rom->fd, hrom, sizeof(struct srom_header));
+        }
+    }
+
+    // Caso nao tenha encontrado o cabecalho insere -'s no campo de nome
+    hist = 0;
+    blank = 0;
+    for(i=0;i<21;i++){
+        if(isascii(hrom->romName[i])) hist++;
+        if(hrom->romName[i] == 0x20) blank++;
+    }
+    if(hist < 20 || blank > 18) {
+        for(i=0;i<20;i++){
+            hrom->romName[i] = 0x2d;
+        }
+    }
+
 
 }
