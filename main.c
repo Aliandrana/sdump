@@ -221,8 +221,6 @@ int main(int argc, char **argv) {
         printf("Compl. Chksum:\t0x%hx\n", hrom.romCompCheck);
         printf("Checksum:\t0x%hx\n", hrom.romChecksum);
 
-
-        return 0;
-
     }
+        return 0;
 }

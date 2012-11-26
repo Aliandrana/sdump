@@ -7,3 +7,4 @@ set(PCRE_INCS_PATH "/usr/local/include" CACHE INTERNAL "")
 set(CMAKE_C_FLAGS "-Wall -g")
 
 add_executable(sdump sdump.c main.c)
+target_link_libraries(sdump m)
