@@ -27,20 +27,34 @@ int main(int argc, char **argv) {
             return 1;
         }
 
-        u_int8_t mapmodeAA, mapmodeB;
-
         printf("ROM Name:\t%s\n", hrom.romName);
 
         printf("Map Mode:\t");
-        mapmodeAA = hrom.romMapMode & 0x30;
-        mapmodeB = hrom.romMapMode & 0x01;
-        if(mapmodeAA) 
-            printf("FastROM\n");
-        else if(mapmodeB)
-            printf("FastROM\n");
-        else
-            printf("Desconhecido (0x%hhx)\n", hrom.romMapMode);
- 
+        switch(hrom.romMapMode) {
+            case 0x20:
+                printf("Mode 20 - (Normal Speed (2.68MHz))\n");
+                break;
+            case 0x21:
+                printf("Mode 21 - (Normal Speed (2.68MHz))\n");
+                break;
+            case 0x23:
+                printf("Mode 23 (SA-1) - (Normal Speed (2.68MHz))\n");
+                break;
+            case 0x25:
+                printf("Mode 25 - (Normal Speed (2.68MHz))\n");
+                break;
+            case 0x30:
+                printf("Mode 20 - (High Speed (3.58MHz))\n");
+                break;
+            case 0x31:
+                printf("Mode 21 - (High Speed (3.58MHz))\n");
+                break;
+            case 0x35:
+                printf("Mode 25 - (High Speed (3.58MHz))\n");
+                break;
+            default:
+                printf("Desconhecido\n");
+        }
 
 
         printf("ROM Type:\t");
@@ -52,79 +66,79 @@ int main(int argc, char **argv) {
                 printf("ROM + RAM\n");
                 break;
             case 0x02:
-                printf("ROM + RAM + SRAM\n");
+                printf("ROM + RAM + Battery\n");
                 break;
             case 0x03:
-                printf("DSP + ROM + Enhancement Chip\n");
+                printf("DSP + ROM\n");
                 break;
             case 0x04:
-                printf("DSP + ROM + Enhancement Chip + RAM\n");
+                printf("DSP + ROM + RAM\n");
                 break;
             case 0x05:
-                printf("DSP + ROM + Enhancement Chip + RAM + SRAM\n");
+                printf("DSP + ROM + RAM + Battery\n");
                 break;
             case 0x06:
-                printf("DSP + ROM + Enhancement Chip + SRAM\n");
+                printf("DSP + ROM + Battery\n");
                 break;
             case 0x13:
-                printf("SuperFX + ROM + Enhancement Chip\n");
+                printf("SuperFX + ROM\n");
                 break;
             case 0x14:
-                printf("SuperFX + ROM + Enhancement Chip + RAM\n");
+                printf("SuperFX + ROM + RAM\n");
                 break;
             case 0x15:
-                printf("SuperFX + ROM + Enhancement Chip + RAM + SRAM\n");
+                printf("SuperFX + ROM + RAM + Battery\n");
                 break;
             case 0x16:
-                printf("SuperFX + ROM + Enhancement Chip + SRAM\n");
+                printf("SuperFX + ROM + Battery\n");
                 break;
             case 0x23:
-                printf("OBC1 + ROM + Enhancement Chip\n");
+                printf("OBC1 + ROM\n");
                 break;
             case 0x24:
-                printf("OBC1 + ROM + Enhancement Chip + RAM\n");
+                printf("OBC1 + ROM + RAM\n");
                 break;
             case 0x25:
-                printf("OBC1 + ROM + Enhancement Chip + RAM + SRAM\n");
+                printf("OBC1 + ROM + RAM + Baterry\n");
                 break;
             case 0x26:
-                printf("OBC1 + ROM + Enhancement Chip + SRAM\n");
+                printf("OBC1 + ROM + Battery\n");
                 break;
             case 0x33:
-                printf("SA-1 + ROM + Enhancement Chip\n");
+                printf("SA-1 + ROM\n");
                 break;
             case 0x34:
-                printf("SA-1 + ROM + Enhancement Chip + RAM\n");
+                printf("SA-1 + ROM + RAM\n");
                 break;
             case 0x35:
-                printf("SA-1 + ROM + Enhancement Chip + RAM + SRAM\n");
+                printf("SA-1 + ROM + RAM + Battery\n");
                 break;
             case 0x36:
-                printf("SA-1 + ROM + Enhancement Chip + SRAM\n");
+                printf("SA-1 + ROM + Battery\n");
                 break;
             case 0xE3:
-                printf("Other + ROM + Enhancement Chip\n");
+                printf("Other + ROM\n");
                 break;
             case 0xE4:
-                printf("Other + ROM + Enhancement Chip + RAM\n");
+                printf("Other + ROM + RAM\n");
                 break;
             case 0xE5:
-                printf("Other + ROM + Enhancement Chip + RAM + SRAM\n");
+                printf("Other + ROM + RAM + Battery\n");
                 break;
             case 0xE6:
-                printf("Other + ROM + Enhancement Chip + SRAM\n");
+                printf("Other + ROM + Battery\n");
                 break;
             case 0xF3:
-                printf("Custom Ship + ROM + Enhancement Chip\n");
+                printf("Custom Ship + ROM\n");
                 break;
             case 0xF4:
-                printf("Custom Ship + ROM + Enhancement Chip + RAM\n");
+                printf("Custom Ship + ROM + RAM\n");
                 break;
             case 0xF5:
-                printf("Custom Ship + ROM + Enhancement Chip + RAM + SRAM\n");
+                printf("Custom Ship + ROM + RAM + Battery\n");
                 break;
             case 0xF6:
-                printf("Custom Ship + ROM + Enhancement Chip + SRAM\n");
+                printf("Custom Ship + ROM + Battery\n");
                 break;
             default:
                 printf("Desconhecido\n");
@@ -134,19 +148,19 @@ int main(int argc, char **argv) {
         printf("ROM Size:\t");
         switch(hrom.romSize) {
             case 0x09:
-                printf("3~4MBit\n");
+                printf("3 ~ 4MBit\n");
                 break;
             case 0x0A:
-                printf("5~8MBit\n");
+                printf("5 ~ 8MBit\n");
                 break;
             case 0x0B:
-                printf("9~16Mbit\n");
+                printf("9 ~ 16Mbit\n");
                 break;
             case 0x0C:
-                printf("17~32MBit\n");
+                printf("17 ~ 32MBit\n");
                 break;
             case 0x0D:
-                printf("33~64MBit\n");
+                printf("33 ~ 64MBit\n");
                 break;
             default:
                 printf("Desconhecido\n");
@@ -154,7 +168,27 @@ int main(int argc, char **argv) {
         }
 
 
-        printf("SRAM Size:\t%.0fKB\n", 2048 * pow(2, hrom.romSRAMSize));
+        printf("SRAM Size:\t");
+        switch(hrom.romSRAMSize) {
+            case 0x00:
+                printf("No RAM\n");
+                break;
+            case 0x01:
+                printf("16KBits\n");
+                break;
+            case 0x03:
+                printf("64KBits\n");
+                break;
+            case 0x05:
+                printf("256KBits\n");
+                break;
+            case 0x06:
+                printf("512KBits\n");
+                break;
+            case 0x07:
+                printf("1MBit\n");
+                break;
+        }
 
         printf("Dest. Code:\t");
 
